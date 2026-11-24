@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>English Practice — EduCourse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f5f1; --card:#ffffff; --ink:#1d1d1f; --muted:#6b6b70; --line:#e4e2dc;
+    --accent:#2f5bea; --accent-soft:#e8eeff; --ok:#1f8a4c; --ok-soft:#e5f5ec; --bad:#c2372f; --bad-soft:#fbe9e7; --warn:#a86a00;
+    --c1:#7a4fd6; --c2:#1f8a7a; --c3:#c77a12; --c4:#2f5bea; --c5:#c2378a; --c6:#2e7d32; --c7:#b5452b; --c8:#4a6b8a;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#161618; --card:#1f1f22; --ink:#f1f1f3; --muted:#a0a0a8; --line:#333338;
+      --accent:#7d9bff; --accent-soft:#232c4a; --ok:#4cc584; --ok-soft:#173326; --bad:#ff7b72; --bad-soft:#3a1d1b; --warn:#f0b04f;
+      --c1:#b392ff; --c2:#4fd1bd; --c3:#f0b04f; --c4:#7d9bff; --c5:#ff8fcf; --c6:#7bd88f; --c7:#ff9a7a; --c8:#9ec3e6; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.5}
+  .wrap{max-width:660px;margin:0 auto;padding:28px 18px 60px}
+  h1{font-size:1.5rem;margin:0 0 4px;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin:0 0 24px;font-size:.95rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+  .crumb{display:flex;align-items:center;gap:8px;margin-bottom:14px;font-size:.88rem}
+  .link{background:none;border:none;color:var(--accent);font:inherit;font-weight:600;cursor:pointer;padding:0}
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:.85rem;color:var(--muted)}
+  .bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-bottom:22px}
+  .bar>div{height:100%;background:var(--accent);width:0;transition:width .3s}
+  .tag{display:inline-block;font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:3px 9px;border-radius:99px;border:1px solid currentColor}
+  .k1{color:var(--c1)} .k2{color:var(--c2)} .k3{color:var(--c3)} .k4{color:var(--c4)} .k5{color:var(--c5)} .k6{color:var(--c6)} .k7{color:var(--c7)} .k8{color:var(--c8)}
+  .q{font-size:1.15rem;font-weight:600;margin:14px 0 6px}
+  .hint{color:var(--muted);font-size:.9rem;margin:0 0 16px}
+  .big{font-size:1.9rem;font-weight:700;text-align:center;margin:10px 0 18px;line-height:1.35}
+  .big.sentence{font-size:1.25rem;font-weight:600}
+  .big .blank{display:inline-block;min-width:70px;border-bottom:2.5px solid var(--accent);margin:0 4px}
+  .approx{font-size:1.15rem;text-align:center;background:var(--accent-soft);border-radius:10px;padding:10px;margin:6px 0 16px;letter-spacing:.03em}
+  .listen{display:flex;justify-content:center;margin:4px 0 12px}
+  input[type=text]{width:100%;font:inherit;font-size:1.05rem;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);outline:none}
+  input[type=text]:focus{border-color:var(--accent)}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .opt{font:inherit;font-size:1.02rem;padding:12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);cursor:pointer;text-align:center}
+  .opt:hover:not(:disabled){border-color:var(--accent)}
+  .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+  .opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+  .btn{font:inherit;font-weight:600;padding:12px 18px;border:none;border-radius:10px;background:var(--accent);color:#fff;cursor:pointer}
+  .btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+  .btn:disabled{opacity:.5;cursor:default}
+  .row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .fb{margin-top:16px;padding:14px;border-radius:10px;font-size:.95rem;display:none}
+  .fb.ok{display:block;background:var(--ok-soft);color:var(--ok)}
+  .fb.bad{display:block;background:var(--bad-soft);color:var(--bad)}
+  .fb b{color:var(--ink)}
+  .fb .why{color:var(--ink);margin-top:6px;opacity:.85}
+  .fb .warn{color:var(--warn);margin-top:6px;font-weight:600}
+  .score{font-size:3rem;font-weight:700;text-align:center;margin:8px 0 0}
+  .center{text-align:center}
+  .weeks{display:grid;gap:12px}
+  .week{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;width:100%;font:inherit;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:18px 20px;cursor:pointer}
+  .week:hover{border-color:var(--accent)}
+  .week h2{font-size:1.1rem;margin:0 0 2px}
+  .week p{margin:0;color:var(--muted);font-size:.9rem}
+  .week .count{font-size:.85rem;color:var(--accent);font-weight:600;white-space:nowrap}
+  .cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:18px 0}
+  .cat{border:1.5px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-size:.8rem;color:var(--muted);background:var(--bg);font-family:inherit}
+  .cat strong{display:block;font-size:1.1rem;color:var(--ink)}
+  button.cat{cursor:pointer}
+  button.cat.on{border-color:var(--accent);background:var(--accent-soft)}
+  button.cat.off{opacity:.45}
+  .review{margin-top:18px}
+  .review h3{font-size:1rem;margin:0 0 10px}
+  .rv{border-top:1px solid var(--line);padding:10px 0;font-size:.92rem}
+  .rv .yours{color:var(--bad)} .rv .right{color:var(--ok);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>English Practice</h1>
+  <p class="sub">Cuestionarios de repaso del curso de inglés en EduCourse.</p>
+  <div id="app"></div>
+</div>
+
+<script>
+// =====================================================================
+// SEMANAS Y TEMAS
+// =====================================================================
+const WEEKS = [
+  { id:1, title:'Semana 1', desc:'Alfabeto y deletreo, puntuación, números y lugares',
+    cats:{ num:'Números', place:'Lugares', punct:'Puntuación', spell:'Deletreo' } },
+  { id:2, title:'Semana 2', desc:'Días, meses, pronombres, will, Wh- questions, daily routine, artículos y transition words',
+    cats:{ days:'Días', months:'Meses', pron:'Pronombres', will:'Will', wh:'Wh- questions', routine:'Daily routine', art:'A / An / The', trans:'Transition words' } },
+  { id:3, title:'Semana 3', desc:'Estaciones y clima, preposiciones de lugar y de tiempo (in, on, at)',
+    cats:{ weather:'Seasons & weather', pplace:'Prepositions of place', ptime:'Prepositions of time' } },
+];
+
+// =====================================================================
+// BANCO DE PREGUNTAS
+// type: 'text' (escribir) | 'mc' (opción múltiple) | 'listen' (escuchar deletreo y escribir)
+// pron: compara como pronunciación · noAnd: ignora "and" (números) · cap: recordar mayúscula
+// =====================================================================
+const BANK = [
+// NÚMEROS (9)
+  {week:1, cat:'num', noAnd:true, type:'text', q:'Escribe el número en inglés', big:'13', a:['thirteen'], why:'13 = thir-TEEN (acento al final). No lo confundas con 30 = THIR-ty.'},
+  {week:1, cat:'num', noAnd:true, type:'text', q:'Escribe el número en inglés', big:'40', a:['forty'], why:'Se escribe forty, sin "u" (no "fourty"), aunque four sí la lleva.'},
+  {week:1, cat:'num', noAnd:true, type:'text', q:'Escribe el número en inglés', big:'47', a:['forty seven'], why:'Del 21 al 99 se usa guion: forty-seven.'},
+  {week:1, cat:'num', noAnd:true, type:'text', q:'Escribe el número en inglés', big:'118', a:['one hundred eighteen','a hundred eighteen'], why:'one hundred (and) eighteen. "Hundred" no lleva "s".'},
+  {week:1, cat:'num', noAnd:true, type:'text', q:'Escribe el número en inglés', big:'365', a:['three hundred sixty five'], why:'three hundred (and) sixty-five.'},
+  {week:1, cat:'num', noAnd:true, type:'text', q:'Escribe el número en inglés', big:'1,500', a:['one thousand five hundred','fifteen hundred','a thousand five hundred'], why:'one thousand five hundred, o también fifteen hundred.'},
+  {week:1, cat:'num', noAnd:true, type:'text', q:'Escribe el número en inglés', big:'75,000', a:['seventy five thousand'], why:'seventy-five thousand. "Thousand" no lleva "s".'},
+  {week:1, cat:'num', noAnd:true, type:'text', q:'Escribe el número en inglés', big:'300,000', a:['three hundred thousand'], why:'three hundred thousand.'},
+  {week:1, cat:'num', noAnd:true, type:'text', q:'Escribe el número en inglés', big:'4,000,000', a:['four million'], why:'four million — sin "s" (no "four millions").'},
+
+  // LUGARES (8)
+  {week:1, cat:'place', type:'text', q:'¿Cómo se dice en inglés?', big:'Museo', a:['museum','a museum','the museum'], why:'Museum (miu-SÍ-om).'},
+  {week:1, cat:'place', type:'text', q:'¿Cómo se dice en inglés?', big:'Alcaldía', a:['city hall','town hall'], why:'City Hall.'},
+  {week:1, cat:'place', type:'text', q:'¿Cómo se dice en inglés?', big:'Embajada', a:['embassy','an embassy','the embassy'], why:'Embassy — con doble S.'},
+  {week:1, cat:'place', type:'text', q:'¿Cómo se dice en inglés?', big:'Fábrica', a:['factory','a factory','the factory'], why:'Factory.'},
+  {week:1, cat:'place', type:'text', q:'¿Cómo se dice en inglés?', big:'Puente', a:['bridge','a bridge','the bridge'], why:'Bridge.'},
+  {week:1, cat:'place', type:'text', q:'¿Cómo se dice en inglés?', big:'Parque de diversiones', a:['amusement park','an amusement park','the amusement park'], why:'Amusement park.'},
+  {week:1, cat:'place', type:'text', q:'¿Cómo se dice en inglés?', big:'Isla', a:['island','an island','the island'], why:'Island — la "s" no se pronuncia: ÁI-land.'},
+  {week:1, cat:'place', type:'text', q:'¿Cómo se dice en inglés?', big:'Bosque', a:['forest','a forest','the forest'], why:'Forest.'},
+
+  // PUNTUACIÓN (10)
+  {week:1, cat:'punct', type:'text', q:'¿Cómo se llama este signo en inglés?', big:'_', a:['underscore'], why:'_ = underscore (ánderskor).'},
+  {week:1, cat:'punct', type:'text', q:'¿Cómo se llama este signo en inglés?', big:'-', a:['hyphen','dash'], why:'- = hyphen (jáifen). "Dash" es una raya más larga (—), pero se acepta.'},
+  {week:1, cat:'punct', type:'text', q:'¿Cómo se llama este signo en inglés?', big:';', a:['semicolon','semi colon'], why:'; = semicolon (sémi-cóulon).'},
+  {week:1, cat:'punct', type:'text', q:'¿Cómo se llama este signo en inglés?', big:'@', a:['at','at sign'], why:'@ = at.'},
+  {week:1, cat:'punct', type:'text', q:'¿Cómo se llama este signo en inglés?', big:'?', a:['question mark'], why:'? = question mark (kuéschon mark).'},
+  {week:1, cat:'punct', type:'mc', q:'¿Cuál signo es un "colon"?', opts:[':',';',',','.'], a:':', why:'Colon = dos puntos ( : ). Semicolon = punto y coma ( ; ).'},
+  {week:1, cat:'punct', type:'mc', q:'¿Cuál signo es una "comma"?', opts:[',','.',';','\''], a:',', why:'Comma = coma ( , ).'},
+  {week:1, cat:'punct', type:'mc', q:'En el correo jorge.romero@mail.com, ¿cómo se lee el "."?', opts:['dot','point','period','full stop'], a:'dot', why:'En correos y páginas web el punto se lee "dot".'},
+  {week:1, cat:'punct', type:'mc', q:'3.5 se lee "three ___ five"', opts:['point','dot','period','comma'], a:'point', why:'En decimales el punto se lee "point".'},
+  {week:1, cat:'punct', type:'mc', q:'¿Qué significan "parentheses"?', opts:['( )','" "','/ /','# #'], a:'( )', why:'Parentheses = paréntesis ( ). " " = quotation marks.'},
+
+  // DELETREO Y VOCALES (13)
+  {week:1, cat:'spell', type:'mc', q:'¿Qué letra se pronuncia "ái"?', opts:['I','E','A','Y'], a:'I', why:'I = /aɪ/ "ái". Ojo: Y = "uái".'},
+  {week:1, cat:'spell', type:'mc', q:'¿Qué letra se pronuncia "i"?', opts:['E','I','Y','A'], a:'E', why:'E = /iː/ "i". Es la que más se confunde con nuestra I.'},
+  {week:1, cat:'spell', type:'mc', q:'¿Qué letra se pronuncia "éi"?', opts:['A','E','I','H'], a:'A', why:'A = /eɪ/ "éi". H = "éich".'},
+  {week:1, cat:'spell', type:'mc', q:'¿Qué letra se pronuncia "óu"?', opts:['O','U','W','A'], a:'O', why:'O = /oʊ/ "óu".'},
+  {week:1, cat:'spell', type:'mc', q:'¿Qué letra se pronuncia "iú"?', opts:['U','Q','W','O'], a:'U', why:'U = /juː/ "iú". Q = "kiú", W = "dábel-iu".'},
+  {week:1, cat:'spell', type:'mc', q:'¿Qué letra se pronuncia "yéi"?', opts:['J','G','Y','H'], a:'J', why:'J = "yéi", G = "yi". Son al revés que en español.'},
+  {week:1, cat:'spell', type:'text', q:'Escribe la pronunciación aproximada de esta letra', big:'I', a:['ai','ay','aai'], why:'I se dice "ái" /aɪ/.', pron:true},
+  {week:1, cat:'spell', type:'text', q:'Escribe la pronunciación aproximada de esta letra', big:'E', a:['i','ii','ee'], why:'E se dice "i" /iː/.', pron:true},
+  {week:1, cat:'spell', type:'text', q:'Escribe la pronunciación aproximada de esta letra', big:'A', a:['ei','ey','eei'], why:'A se dice "éi" /eɪ/.', pron:true},
+  {week:1, cat:'spell', type:'text', q:'Escribe la pronunciación aproximada de esta letra', big:'U', a:['iu','yu','you','iuu','yuu'], why:'U se dice "iú" /juː/.', pron:true},
+  {week:1, cat:'spell', type:'listen', q:'Escucha (o lee) el deletreo y escribe la palabra', word:'BRIDGE', a:['bridge'], why:'bi · ar · ái · di · yi · i = BRIDGE (puente).'},
+  {week:1, cat:'spell', type:'listen', q:'Escucha (o lee) el deletreo y escribe la palabra', word:'EMBASSY', a:['embassy'], why:'i · em · bi · éi · double es · uái = EMBASSY (embajada).'},
+  {week:1, cat:'spell', type:'listen', q:'Escucha (o lee) el deletreo y escribe la palabra', word:'ISLAND', a:['island'], why:'ái · es · el · éi · en · di = ISLAND (isla).'},
+// ---------- MONDAY · DAYS OF THE WEEK ----------
+  {week:2, day:'Monday', cat:'days', type:'text', q:'Escribe el día en inglés', big:'Martes', a:['Tuesday'], cap:true, why:'Tuesday: T-U-E-S-D-A-Y. Lleva "ue" después de la T.'},
+  {week:2, day:'Monday', cat:'days', type:'text', q:'Escribe el día en inglés', big:'Miércoles', a:['Wednesday'], cap:true, why:'Wednesday: W-E-D-N-E-S-D-A-Y. La "d" después de "We" se escribe, aunque no se pronuncia.'},
+  {week:2, day:'Monday', cat:'days', type:'text', q:'Escribe el día en inglés', big:'Jueves', a:['Thursday'], cap:true, why:'Thursday: T-H-U-R-S-D-A-Y. Empieza con "Thu".'},
+  {week:2, day:'Monday', cat:'days', type:'mc', q:'¿Cuál está bien escrito?', opts:['Wednesday','Wensday','Wednsday','Wedensday'], a:'Wednesday', why:'Wed + nes + day = Wednesday.'},
+  {week:2, day:'Monday', cat:'days', type:'mc', q:'¿Cuál está bien escrito?', opts:['Tuesday','Tusday','Teusday','Tuseday'], a:'Tuesday', why:'Tue + s + day = Tuesday ("ue", no "eu").'},
+  {week:2, day:'Monday', cat:'days', type:'mc', q:'¿Cuál está bien escrito?', opts:['Thursday','Thrusday','Thurday','Thusrday'], a:'Thursday', why:'Thurs + day = Thursday. Primero "u" y luego "r".'},
+  {week:2, day:'Monday', cat:'days', type:'mc', q:'¿Qué significa "Thursday"?', opts:['Jueves','Martes','Miércoles','Viernes'], a:'Jueves', why:'Thursday = jueves. Tuesday = martes: los dos empiezan con T, ¡no los confundas!'},
+  {week:2, day:'Monday', cat:'days', type:'mc', q:'¿Qué significa "Tuesday"?', opts:['Martes','Jueves','Miércoles','Lunes'], a:'Martes', why:'Tuesday = martes.'},
+  {week:2, day:'Monday', cat:'days', type:'mc', q:'¿Qué significa "Wednesday"?', opts:['Miércoles','Martes','Jueves','Sábado'], a:'Miércoles', why:'Wednesday = miércoles.'},
+  {week:2, day:'Monday', cat:'days', type:'text', q:'Escribe el día completo de esta abreviatura', big:'Wed', a:['Wednesday'], cap:true, why:'Wed = Wednesday.'},
+  {week:2, day:'Monday', cat:'days', type:'text', q:'Escribe el día completo de esta abreviatura', big:'Thu', a:['Thursday'], cap:true, why:'Thu = Thursday.'},
+  {week:2, day:'Monday', cat:'days', type:'text', q:'Escribe el día completo de esta abreviatura', big:'Tue', a:['Tuesday'], cap:true, why:'Tue = Tuesday.'},
+  {week:2, day:'Monday', cat:'days', type:'text', q:'Completa', big:'The day after Tuesday is <span class="blank"></span>', sentence:true, a:['Wednesday'], cap:true, why:'Después del martes viene el miércoles: Wednesday.'},
+  {week:2, day:'Monday', cat:'days', type:'text', q:'Completa', big:'The day before Friday is <span class="blank"></span>', sentence:true, a:['Thursday'], cap:true, why:'Antes del viernes viene el jueves: Thursday.'},
+  {week:2, day:'Monday', cat:'days', type:'text', q:'Completa', big:'The day between Monday and Wednesday is <span class="blank"></span>', sentence:true, a:['Tuesday'], cap:true, why:'Entre lunes y miércoles está el martes: Tuesday.'},
+
+  // ---------- MONDAY · MONTHS (los más difíciles de escribir) ----------
+  {week:2, day:'Monday', cat:'months', type:'text', q:'Escribe el mes en inglés', big:'Febrero', a:['February'], cap:true, why:'February: F-E-B-R-U-A-R-Y. Tiene una "r" después de "Feb", que muchos olvidan.'},
+  {week:2, day:'Monday', cat:'months', type:'text', q:'Escribe el mes en inglés', big:'Enero', a:['January'], cap:true, why:'January: J-A-N-U-A-R-Y.'},
+  {week:2, day:'Monday', cat:'months', type:'text', q:'Escribe el mes en inglés', big:'Agosto', a:['August'], cap:true, why:'August: A-U-G-U-S-T. Empieza con "Au", no con "Ag".'},
+  {week:2, day:'Monday', cat:'months', type:'text', q:'Escribe el mes en inglés', big:'Septiembre', a:['September'], cap:true, why:'September: sin "i" (no "Septiember") y termina en "-ber".'},
+  {week:2, day:'Monday', cat:'months', type:'text', q:'Escribe el mes en inglés', big:'Octubre', a:['October'], cap:true, why:'October: con "o" (Octo-), no "Octuber".'},
+  {week:2, day:'Monday', cat:'months', type:'text', q:'Escribe el mes en inglés', big:'Diciembre', a:['December'], cap:true, why:'December: con "c", no con "s".'},
+  {week:2, day:'Monday', cat:'months', type:'mc', q:'¿Cuál está bien escrito?', opts:['February','Febuary','Febrary','Febraury'], a:'February', why:'Feb-RU-ary: después de "Feb" va "ru".'},
+  {week:2, day:'Monday', cat:'months', type:'mc', q:'¿Cuál está bien escrito?', opts:['August','Agust','Augost','Agoust'], a:'August', why:'Aug-ust.'},
+  {week:2, day:'Monday', cat:'months', type:'mc', q:'¿Cuál está bien escrito?', opts:['September','Septiember','Setember','Septembre'], a:'September', why:'Sep-tem-ber.'},
+  {week:2, day:'Monday', cat:'months', type:'mc', q:'¿Qué significa "June"?', opts:['Junio','Julio','Enero','Junio y julio'], a:'Junio', why:'June = junio · July = julio.'},
+  {week:2, day:'Monday', cat:'months', type:'text', q:'Completa', big:'The month after July is <span class="blank"></span>', sentence:true, a:['August'], cap:true, why:'Después de julio viene agosto: August.'},
+
+  // ---------- MONDAY · PRONOUNS (los más confusos) ----------
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'The dog is wagging <span class="blank"></span> tail.', sentence:true, opts:['its',"it's",'it','his'], a:'its', why:'its = su (posesivo). it\'s = it is. Aquí es "su cola", así que va its.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'<span class="blank"></span> raining today.', sentence:true, opts:["It's",'Its','It','Is'], a:"It's", why:'It\'s = It is. "It is raining" (está lloviendo). En inglés el sujeto no se omite.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'<span class="blank"></span> house is very big.', sentence:true, opts:['Their','There',"They're",'Them'], a:'Their', why:'Their = su (de ellos). Su casa.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'<span class="blank"></span> coming on Thursday.', sentence:true, opts:["They're",'Their','There','They'], a:"They're", why:'They\'re = They are. "They are coming" (vienen).'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'Your phone is over <span class="blank"></span>.', sentence:true, opts:['there','their',"they're",'them'], a:'there', why:'there = allí.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'Maria lost <span class="blank"></span> keys.', sentence:true, opts:['her','his','she','hers'], a:'her', why:'Maria es mujer → her (su). His es "su" de un hombre.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'Jorge loves <span class="blank"></span> job.', sentence:true, opts:['his','her','him','he'], a:'his', why:'Jorge es hombre → his (su). Him es objeto (lo, le).'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'My brother and <span class="blank"></span> will travel in August.', sentence:true, opts:['I','me','my','mine'], a:'I', why:'Es sujeto (hace la acción) → I. Truco: quita "my brother and" → "I will travel".'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'Can you help <span class="blank"></span>?', sentence:true, opts:['me','I','my','mine'], a:'me', why:'Recibe la acción → objeto: me.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'This laptop is <span class="blank"></span>.', sentence:true, opts:['mine','my','me','I'], a:'mine', why:'Va solo, sin sustantivo después → pronombre posesivo: mine.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'That is <span class="blank"></span> car.', sentence:true, opts:['my','mine','me','I'],  a:'my', why:'Va antes de un sustantivo (car) → adjetivo posesivo: my.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'<span class="blank"></span> late again!', sentence:true, opts:["You're",'Your','You','Yours'], a:"You're", why:'You\'re = You are. "You are late" (llegas tarde).'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'Is this <span class="blank"></span> phone?', sentence:true, opts:['your',"you're",'yours','you'], a:'your', why:'Va antes de "phone" → your (tu).'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'I will visit <span class="blank"></span> next week. (a ellos)', sentence:true, opts:['them','their','they','theirs'], a:'them', why:'Recibe la acción → objeto: them.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'They will call <span class="blank"></span> tomorrow. (a nosotros)', sentence:true, opts:['us','our','we','ours'], a:'us', why:'Recibe la acción → objeto: us.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'I will call <span class="blank"></span> on Wednesday. (a él)', sentence:true, opts:['him','he','his','her'], a:'him', why:'Recibe la acción → objeto: him.'},
+  {week:2, day:'Monday', cat:'pron', type:'mc', q:'Completa la oración', big:'The decision is <span class="blank"></span>. (de ella)', sentence:true, opts:['hers','her','she',"her's"], a:'hers', why:'Va solo → pronombre posesivo: hers. Nunca lleva apóstrofo ("her\'s" no existe).'},
+
+  // ---------- MONDAY · WILL + PRONOUNS (+ / − / ?) ----------
+  // Transformaciones (escribir)
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Pásala a NEGATIVO', big:'She will call you.', sentence:true, a:['She will not call you'], why:'She will not call you / She won\'t call you. Se agrega "not" después de will.'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Pásala a PREGUNTA', big:'They will travel in December.', sentence:true, a:['Will they travel in December'], why:'Will va antes del sujeto: Will they travel in December?'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Pásala a AFIRMATIVO', big:"He won't work on Sunday.", sentence:true, a:['He will work on Sunday'], why:'He will work on Sunday / He\'ll work on Sunday.'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Pásala a PREGUNTA', big:'You will help me.', sentence:true, a:['Will you help me'], why:'Will you help me?'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Pásala a NEGATIVO', big:'We will win the game.', sentence:true, a:['We will not win the game'], why:'We will not win the game / We won\'t win the game.'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Pásala a PREGUNTA', big:'It will rain tomorrow.', sentence:true, a:['Will it rain tomorrow'], why:'Will it rain tomorrow?'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Pásala a NEGATIVO', big:'I will study on Thursday.', sentence:true, a:['I will not study on Thursday'], why:'I will not study on Thursday / I won\'t study on Thursday.'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Pásala a AFIRMATIVO', big:'Will she visit her mother?', sentence:true, a:['She will visit her mother'], why:'Afirmativo: el sujeto va primero → She will visit her mother.'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Ordena la oración', big:'not / they / on Wednesday / will / come', sentence:true, a:['They will not come on Wednesday'], why:'Sujeto + will not + verbo + complemento: They will not (won\'t) come on Wednesday.'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Ordena la pregunta', big:'he / will / us / help / ?', sentence:true, a:['Will he help us'], why:'Will + sujeto + verbo + objeto: Will he help us?'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Ordena la oración', big:'in February / will / we / travel', sentence:true, a:['We will travel in February'], why:'We will travel in February / We\'ll travel in February.'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Traduce al inglés', big:'Ella no vendrá el miércoles.', sentence:true, a:['She will not come on Wednesday'], why:'She won\'t come on Wednesday. Con días se usa "on".'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Traduce al inglés', big:'¿Me llamarás mañana?', sentence:true, a:['Will you call me tomorrow'], why:'Will you call me tomorrow?'},
+  {week:2, day:'Monday', cat:'will', type:'text', q:'Traduce al inglés', big:'Ellos viajarán en agosto.', sentence:true, a:['They will travel in August'], why:'They will (They\'ll) travel in August. Con meses se usa "in".'},
+  // Opción múltiple
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'Completa', big:'<span class="blank"></span> you call me tomorrow?', sentence:true, opts:['Will','Do','Are',"Won't to"], a:'Will', why:'Pregunta en futuro: Will + sujeto + verbo.'},
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'Completa', big:'She will <span class="blank"></span> in February.', sentence:true, opts:['travel','travels','to travel','traveling'], a:'travel', why:'Después de will el verbo va en forma base: travel (sin -s, sin "to").'},
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'Completa en negativo', big:'They <span class="blank"></span> come on Tuesday.', sentence:true, opts:["won't","willn't","don't will",'will no'], a:"won't", why:'La contracción de will not es won\'t.'},
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'Respuesta corta', big:'Will he help us? — Yes, <span class="blank"></span>.', sentence:true, opts:['he will','he does',"he'll",'will he'], a:'he will', why:'Yes, he will. En la respuesta corta afirmativa no se contrae ("Yes, he\'ll" ✘).'},
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'Respuesta corta', big:'Will they come? — No, <span class="blank"></span>.', sentence:true, opts:["they won't","they don't","they willn't","won't they"], a:"they won't", why:'No, they won\'t.'},
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'Respuesta corta', big:'Will you study tonight? — Yes, <span class="blank"></span>.', sentence:true, opts:['I will','you will','I study','I do'], a:'I will', why:'Te preguntan con "you" → respondes con "I": Yes, I will.'},
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'¿Cuál es correcta?', opts:['He will work tomorrow.','He will works tomorrow.','He wills work tomorrow.','He will to work tomorrow.'], a:'He will work tomorrow.', why:'Will no cambia y el verbo va en forma base.'},
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'¿Cuál es correcta?', opts:['Will she come on Friday?','She will come on Friday?','Will come she on Friday?','She come will on Friday?'], a:'Will she come on Friday?', why:'En la pregunta will va al inicio, antes del sujeto.'},
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'Completa', big:'When <span class="blank"></span> travel?', sentence:true, opts:['will you','you will','will you to','do you will'], a:'will you', why:'Wh- + will + sujeto + verbo: When will you travel?'},
+  {week:2, day:'Monday', cat:'will', type:'mc', q:'¿Qué significa "won\'t"?', opts:['will not (no + futuro)','want (querer)','would not','was not'], a:'will not (no + futuro)', why:'won\'t = will not. No lo confundas con "want" (querer).'},
+// ---------- MONDAY · WH- QUESTIONS ----------
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> will you travel? — In August.', sentence:true, opts:['When','Where','What','Who'], a:'When', why:'La respuesta es una fecha/tiempo → When (cuándo).'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> will they live? — In Canada.', sentence:true, opts:['Where','When','Which','Why'], a:'Where', why:'La respuesta es un lugar → Where (dónde).'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> will help us? — Maria.', sentence:true, opts:['Who','Whose','What','How'], a:'Who', why:'La respuesta es una persona → Who (quién).'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> will you do on Saturday? — I will study.', sentence:true, opts:['What','Which','Where','Who'], a:'What', why:'Pregunta por una acción → What (qué).'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> will he move? — Because he has a new job.', sentence:true, opts:['Why','How','When','What'], a:'Why', why:'La respuesta empieza con "because" → Why (por qué).'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> will we get there? — By bus.', sentence:true, opts:['How','What','Where','Which'], a:'How', why:'Pregunta por la manera → How (cómo).'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> day will you come, Tuesday or Thursday?', sentence:true, opts:['Which','What','When','Who'], a:'Which', why:'Eliges entre opciones conocidas → Which (cuál).'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> car will we use? — Jorge\'s car.', sentence:true, opts:['Whose',"Who's",'Who','Which'], a:'Whose', why:'Pregunta por el dueño → Whose (de quién). Who\'s = who is.'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> will it cost? — Twenty dollars.', sentence:true, opts:['How much','How many','How long','How often'], a:'How much', why:'Dinero → How much.'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'<span class="blank"></span> people will come? — Ten.', sentence:true, opts:['How many','How much','How old','How long'], a:'How many', why:'People se puede contar → How many.'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'How <span class="blank"></span> will the meeting take? — One hour.', sentence:true, opts:['long','much','often','many'], a:'long', why:'Duración → How long (cuánto tiempo).'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa la pregunta', big:'How <span class="blank"></span> will you be in 2027?', sentence:true, opts:['old','many','long','much'], a:'old', why:'Edad → How old.'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'¿Cuál es correcta?', opts:['Where will you go?','Where you will go?','Where will go you?','Will where you go?'], a:'Where will you go?', why:'Orden: Wh- + will + sujeto + verbo.'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'¿Cuál es correcta?', opts:['Who will come tomorrow?','Who will he come tomorrow?','Who he will come tomorrow?','Will who come tomorrow?'], a:'Who will come tomorrow?', why:'Cuando "who" es el sujeto (quién hace la acción), no se agrega otro sujeto.'},
+  {week:2, day:'Monday', cat:'wh', type:'mc', q:'Completa', big:'<span class="blank"></span> phone is this?', sentence:true, opts:['Whose',"Who's",'Who','Where'], a:'Whose', why:'Whose = de quién. Who\'s = who is.'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Escribe la Wh- word en inglés', big:'Dónde', a:['Where'], why:'Where: W-H-E-R-E. No confundir con "were" (eran/estaban).'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Escribe la Wh- word en inglés', big:'De quién', a:['Whose'], why:'Whose: W-H-O-S-E.'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Escribe la Wh- word en inglés', big:'Por qué', a:['Why'], why:'Why: W-H-Y.'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Escribe la Wh- word en inglés', big:'Cuál (de opciones)', a:['Which'], why:'Which: W-H-I-C-H.'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Ordena la pregunta', big:'will / where / they / live', sentence:true, a:['Where will they live'], why:'Wh- + will + sujeto + verbo: Where will they live?'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Ordena la pregunta', big:'you / when / travel / will', sentence:true, a:['When will you travel'], why:'When will you travel?'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Ordena la pregunta', big:'she / what / do / will / on Friday', sentence:true, a:['What will she do on Friday'], why:'What will she do on Friday?'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Traduce al inglés', big:'¿Qué harás el sábado?', sentence:true, a:['What will you do on Saturday'], why:'What will you do on Saturday? Con días se usa "on".'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Traduce al inglés', big:'¿Cuándo vendrá ella?', sentence:true, a:['When will she come'], why:'When will she come?'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Traduce al inglés', big:'¿Dónde trabajarás?', sentence:true, a:['Where will you work'], why:'Where will you work?'},
+  {week:2, day:'Monday', cat:'wh', type:'text', q:'Traduce al inglés', big:'¿Cuántos días te quedarás?', sentence:true, a:['How many days will you stay'], why:'How many days will you stay? (days se cuenta → how many).'},
+// ---------- WEDNESDAY · DAILY ROUTINE ----------
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Despertarse', a:['wake up'], why:'Wake up. Se necesita el "up".'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Tomar una ducha', a:['take a shower'], why:'Take a shower (no "make a shower").'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Cepillarse los dientes', a:['brush your teeth','brush my teeth','brush the teeth'], why:'Brush your teeth. En inglés se usa el posesivo (my, your, her…) en lugar de "los".'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Vestirse', a:['get dressed'], why:'Get dressed.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Desayunar', a:['have breakfast'], why:'Have breakfast (sin "the").'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Escuchar música', a:['listen to music'], why:'Listen TO music. Listen siempre lleva "to".'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Hablar con alguien', a:['talk to someone','talk with someone','talk to somebody'], why:'Talk to someone.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Tomar una siesta', a:['take a nap'], why:'Take a nap.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Estudiar', a:['study'], why:'Study.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'¿Cómo se dice en inglés?', big:'Trabajar', a:['work'], why:'Work.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'¿Qué significa "get dressed"?', opts:['Vestirse','Despertarse','Ducharse','Desayunar'], a:'Vestirse', why:'Get dressed = vestirse.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'¿Qué significa "take a nap"?', opts:['Tomar una siesta','Tomar una ducha','Tomar el desayuno','Tomar un descanso del trabajo'], a:'Tomar una siesta', why:'Take a nap = tomar una siesta.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'¿Qué significa "wake up"?', opts:['Despertarse','Levantar la mano','Caminar','Vestirse'], a:'Despertarse', why:'Wake up = despertarse.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'Completa', big:'I <span class="blank"></span> a shower every morning.', sentence:true, opts:['take','make','do','get'], a:'take', why:'Take a shower.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'Completa', big:'We will <span class="blank"></span> breakfast at 7:00.', sentence:true, opts:['have','take','do','have the'], a:'have', why:'Have breakfast, sin "the".'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'Completa', big:'She will listen <span class="blank"></span> music.', sentence:true, opts:['to','at','on','—'], a:'to', why:'Listen to music.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'Completa', big:'I will wake <span class="blank"></span> at 6:00.', sentence:true, opts:['up','on','in','at'], a:'up', why:'Wake up.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'Completa', big:'I will talk <span class="blank"></span> my boss tomorrow.', sentence:true, opts:['to','at','in','for'], a:'to', why:'Talk to someone.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'Completa (pronombres)', big:'Maria will brush <span class="blank"></span> teeth.', sentence:true, opts:['her','his','the','she'], a:'her', why:'Maria → her. En inglés se usa el posesivo: her teeth.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'Completa (pronombres)', big:'They will brush <span class="blank"></span> teeth.', sentence:true, opts:['their','there',"they're",'them'], a:'their', why:'They → their teeth.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'¿Cuál es correcta?', opts:['I will listen to music.','I will listen music.','I will listen at music.','I will to listen music.'], a:'I will listen to music.', why:'Will + verbo base + "to" antes de lo que escuchas.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'¿Cuál es el singular de "teeth"?', opts:['tooth','teeth','tooths','teeths'], a:'tooth', why:'tooth (un diente) → teeth (dientes).'},
+  {week:2, day:'Wednesday', cat:'routine', type:'mc', q:'Completa', big:'<span class="blank"></span> will you take a shower? — At 7:00.', sentence:true, opts:['When','Where','Who','Why'], a:'When', why:'La respuesta es una hora → When.'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'Pásala a NEGATIVO', big:'I will listen to music.', sentence:true, a:['I will not listen to music'], why:"I will not (won't) listen to music."},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'Pásala a PREGUNTA', big:'He will get dressed.', sentence:true, a:['Will he get dressed'], why:'Will he get dressed?'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'Pásala a AFIRMATIVO', big:"They won't take a nap.", sentence:true, a:['They will take a nap'], why:"They will (They'll) take a nap."},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'Ordena la pregunta', big:'what time / you / wake up / will', sentence:true, a:['What time will you wake up'], why:'Wh- + will + sujeto + verbo: What time will you wake up?'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'Traduce al inglés', big:'Ella no tomará una siesta hoy.', sentence:true, a:['She will not take a nap today','Today she will not take a nap'], why:"She won't take a nap today."},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'Traduce al inglés', big:'¿Desayunarás con nosotros?', sentence:true, a:['Will you have breakfast with us'], why:'Will you have breakfast with us?'},
+  {week:2, day:'Wednesday', cat:'routine', type:'text', q:'Traduce al inglés', big:'Mañana hablaré con alguien.', sentence:true, a:['Tomorrow I will talk to someone','I will talk to someone tomorrow','Tomorrow I will talk with someone','I will talk with someone tomorrow'], why:"Tomorrow I'll talk to someone. / I'll talk to someone tomorrow."},
+// ---------- THURSDAY · ARTICLES ----------
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'I will eat <span class="blank"></span> apple.', sentence:true, opts:['an','a','the','—'], a:'an', why:'Apple empieza con sonido de vocal → an.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'She has <span class="blank"></span> dog.', sentence:true, opts:['a','an','the','—'], a:'a', why:'Dog empieza con sonido de consonante → a.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'He will study at <span class="blank"></span> university.', sentence:true, opts:['a','an','the','—'], a:'a', why:'Excepción: university empieza con "u" pero suena "iu" (consonante) → a university.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'We will wait <span class="blank"></span> hour.', sentence:true, opts:['an','a','the','—'], a:'an', why:'Excepción: en hour la h es muda, suena a vocal ("auer") → an hour.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'She is <span class="blank"></span> honest person.', sentence:true, opts:['an','a','the','—'], a:'an', why:'Honest: la h es muda → an honest person.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'They will buy <span class="blank"></span> house.', sentence:true, opts:['a','an','the','—'], a:'a', why:'En house la h sí suena → a house.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'I will eat <span class="blank"></span> hamburger.', sentence:true, opts:['a','an','—','the the'], a:'a', why:'En hamburger la h sí suena → a hamburger.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'My daughter loves <span class="blank"></span> unicorn in that movie.', sentence:true, opts:['the','an','a','—'], a:'the', why:'Es uno específico ("in that movie") → the.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'<span class="blank"></span> moon is bright tonight.', sentence:true, opts:['The','A','An','—'], a:'The', why:'Cosas únicas (solo hay una luna) llevan the.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'Completa con el artículo', big:'I will buy a car. <span class="blank"></span> car will be red.', sentence:true, opts:['The','A','An','—'], a:'The', why:'Primera mención: a car. Después ya se sabe cuál es → the car.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'¿Cuál es correcta?', opts:['an egg','a egg','an book','a apple'], a:'an egg', why:'Egg empieza con sonido de vocal → an egg.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'¿Cuál es correcta?', opts:['a unicorn','an unicorn','a hour','an house'], a:'a unicorn', why:'Unicorn suena "iu-nicorn" (consonante) → a.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'¿Cuál es correcta?', opts:['I will have breakfast at 7:00.','I will have the breakfast at 7:00.','I will have a breakfast at 7:00.','I will have an breakfast at 7:00.'], a:'I will have breakfast at 7:00.', why:'Con las comidas (have breakfast/lunch/dinner) no se usa artículo.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'¿Cuál es correcta?', opts:['a dog','a dogs','an dogs','an dog'], a:'a dog', why:'A/an solo van con singular. Plural: dogs o the dogs.'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'¿Cómo se pronuncia "the" en "the apple"?', opts:['"dii" (sonido de vocal después)','"da" (sonido de consonante después)','"de"','No se pronuncia'], a:'"dii" (sonido de vocal después)', why:'Antes de sonido de vocal, the suena "dii": "dii apple". Antes de consonante suena "da": "da buk".'},
+  {week:2, day:'Thursday', cat:'art', type:'mc', q:'¿Qué significa "the"?', opts:['el, la, los, las','un, una','unos, unas','este, esta'], a:'el, la, los, las', why:'The = el, la, los, las (definido). A/an = un, una (indefinido).'},
+  {week:2, day:'Thursday', cat:'art', type:'text', q:'Escribe a o an', big:'___ orange', a:['an'], why:'Orange empieza con sonido de vocal → an orange.'},
+  {week:2, day:'Thursday', cat:'art', type:'text', q:'Escribe a o an', big:'___ hour', a:['an'], why:'h muda → an hour.'},
+  {week:2, day:'Thursday', cat:'art', type:'text', q:'Escribe a o an', big:'___ university', a:['a'], why:'Suena "iu" → a university.'},
+  {week:2, day:'Thursday', cat:'art', type:'text', q:'Escribe a o an', big:'___ book', a:['a'], why:'Consonante → a book.'},
+  {week:2, day:'Thursday', cat:'art', type:'text', q:'Escribe a o an', big:'___ umbrella', a:['an'], why:'Umbrella suena "ambrela" (vocal) → an umbrella.'},
+  {week:2, day:'Thursday', cat:'art', type:'text', q:'Traduce al inglés', big:'Me comeré una manzana.', sentence:true, a:['I will eat an apple'], why:"I will (I'll) eat an apple."},
+  {week:2, day:'Thursday', cat:'art', type:'text', q:'Traduce al inglés', big:'Ellos comprarán una casa en diciembre.', sentence:true, a:['They will buy a house in December'], why:"They will (They'll) buy a house in December."},
+
+  // ---------- THURSDAY · TRANSITION WORDS ----------
+  {week:2, day:'Thursday', cat:'trans', type:'text', q:'¿Cómo se dice en inglés?', big:'Para comenzar', a:['to begin'], why:'To begin.'},
+  {week:2, day:'Thursday', cat:'trans', type:'text', q:'¿Cómo se dice en inglés?', big:'Primero', a:['first'], why:'First.'},
+  {week:2, day:'Thursday', cat:'trans', type:'text', q:'¿Cómo se dice en inglés?', big:'En segundo lugar', a:['secondly'], why:'Secondly (second = segundo).'},
+  {week:2, day:'Thursday', cat:'trans', type:'text', q:'¿Cómo se dice en inglés?', big:'Después de eso', a:['after that'], why:'After that.'},
+  {week:2, day:'Thursday', cat:'trans', type:'text', q:'¿Cómo se dice en inglés?', big:'Más tarde', a:['later'], why:'Later.'},
+  {week:2, day:'Thursday', cat:'trans', type:'text', q:'¿Cómo se dice en inglés?', big:'Luego / entonces', a:['then'], why:'Then. No confundir con "than" (que, para comparar).'},
+  {week:2, day:'Thursday', cat:'trans', type:'text', q:'¿Cómo se dice en inglés?', big:'Además', a:['besides','in addition','also'], why:'Besides (también: in addition, also).'},
+  {week:2, day:'Thursday', cat:'trans', type:'text', q:'¿Cómo se dice en inglés?', big:'También', a:['also'], why:'Also.'},
+  {week:2, day:'Thursday', cat:'trans', type:'text', q:'¿Cómo se dice en inglés?', big:'Finalmente', a:['finally'], why:'Finally — con doble L.'},
+  {week:2, day:'Thursday', cat:'trans', type:'mc', q:'¿Qué significa "besides that"?', opts:['Además de eso','Después de eso','Antes de eso','Al lado de eso'], a:'Además de eso', why:'Besides that = además de eso. After that = después de eso.'},
+  {week:2, day:'Thursday', cat:'trans', type:'mc', q:'¿Qué significa "in addition"?', opts:['Adicionalmente / además','En conclusión','Para comenzar','En segundo lugar'], a:'Adicionalmente / además', why:'In addition = adicionalmente.'},
+  {week:2, day:'Thursday', cat:'trans', type:'mc', q:'¿Qué tipo de transition word es "after that"?', opts:['Sequence (orden)','Addition (agregar)','Ninguna','Las dos'], a:'Sequence (orden)', why:'After that ordena pasos → sequence.'},
+  {week:2, day:'Thursday', cat:'trans', type:'mc', q:'¿Qué tipo de transition word es "also"?', opts:['Addition (agregar)','Sequence (orden)','Ninguna','Las dos'], a:'Addition (agregar)', why:'Also agrega información → addition.'},
+  {week:2, day:'Thursday', cat:'trans', type:'mc', q:'Completa', big:'<span class="blank"></span>, I will wake up. Then, I will take a shower.', sentence:true, opts:['First','Finally','Besides','Later'], a:'First', why:'El primer paso → First.'},
+  {week:2, day:'Thursday', cat:'trans', type:'mc', q:'Completa', big:'I will work all day. <span class="blank"></span>, I will take a nap.', sentence:true, opts:['Finally','To begin','First','Secondly'], a:'Finally', why:'El último paso → Finally.'},
+  {week:2, day:'Thursday', cat:'trans', type:'mc', q:'Completa', big:'I will study English. I will <span class="blank"></span> study math.', sentence:true, opts:['also','then','first','after'], a:'also', why:'Agregas otra cosa → also (va después de will).'},
+  {week:2, day:'Thursday', cat:'trans', type:'mc', q:'Ordena la secuencia: ¿qué va primero?', opts:['To begin','After that','Then','Finally'], a:'To begin', why:'To begin abre la secuencia; finally la cierra.'},
+// ---------- WEEK 3 · MONDAY · SEASONS & WEATHER ----------
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Primavera', a:['spring'], why:'Spring. Las estaciones no llevan mayúscula.'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Verano', a:['summer'], why:'Summer — con doble M.'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Otoño', a:['autumn','fall'], why:'Autumn (británico) o fall (EE. UU.). Autumn termina en -mn.'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Invierno', a:['winter'], why:'Winter.'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Soleado', a:['sunny'], why:'Sunny — sun + n + y (se duplica la n).'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Lluvioso', a:['rainy'], why:'Rainy (rain + y).'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Nublado', a:['cloudy'], why:'Cloudy (cloud + y).'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Con viento', a:['windy'], why:'Windy (wind + y).'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Nevado / con nieve', a:['snowy'], why:'Snowy (snow + y).'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'¿Cómo se dice en inglés?', big:'Tormentoso', a:['stormy'], why:'Stormy (storm + y).'},
+  {week:3, day:'Monday', cat:'weather', type:'mc', q:'¿Cuál está bien escrito?', opts:['autumn','autum','otumn','autunm'], a:'autumn', why:'Au-tu-mn: la n final se escribe aunque no se pronuncia.'},
+  {week:3, day:'Monday', cat:'weather', type:'mc', q:'¿Cuál está bien escrito?', opts:['sunny','suny','sunnny','sonny'], a:'sunny', why:'Sun → sunny (doble n).'},
+  {week:3, day:'Monday', cat:'weather', type:'mc', q:'¿Qué significa "cloudy"?', opts:['Nublado','Lluvioso','Con viento','Frío'], a:'Nublado', why:'Cloud = nube → cloudy = nublado.'},
+  {week:3, day:'Monday', cat:'weather', type:'mc', q:'¿Qué significa "windy"?', opts:['Con viento','Ventana','Invierno','Tormentoso'], a:'Con viento', why:'Wind = viento → windy. No confundir con window (ventana) ni winter (invierno).'},
+  {week:3, day:'Monday', cat:'weather', type:'mc', q:'Completa', big:'<span class="blank"></span> sunny today.', sentence:true, opts:["It's",'Is','Its','The'], a:"It's", why:'Para el clima el sujeto es it: It is (It\'s) sunny.'},
+  {week:3, day:'Monday', cat:'weather', type:'mc', q:'Completa', big:'It will <span class="blank"></span> rainy tomorrow.', sentence:true, opts:['be','is','rain','are'], a:'be', why:'Will + verbo base: It will be rainy.'},
+  {week:3, day:'Monday', cat:'weather', type:'mc', q:'¿Cómo preguntas por el clima?', opts:["What's the weather like?",'How is the weather like?','What weather is?','How the weather is?'], a:"What's the weather like?", why:"What's the weather like? = ¿Cómo está el clima?"},
+  {week:3, day:'Monday', cat:'weather', type:'mc', q:'¿Cuál es correcta?', opts:['I will travel in summer.','I will travel in Summer.','I will travel on summer.','I will travel at summer.'], a:'I will travel in summer.', why:'Estaciones: con "in" y en minúscula.'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'Traduce al inglés', big:'Mañana estará nublado.', sentence:true, a:['It will be cloudy tomorrow','Tomorrow it will be cloudy'], why:"It will (It'll) be cloudy tomorrow."},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'Pásala a PREGUNTA', big:'It will be windy on Saturday.', sentence:true, a:['Will it be windy on Saturday'], why:'Will it be windy on Saturday?'},
+  {week:3, day:'Monday', cat:'weather', type:'text', q:'Pásala a NEGATIVO', big:'It will be stormy tonight.', sentence:true, a:['It will not be stormy tonight'], why:"It will not (won't) be stormy tonight."},
+
+  // ---------- WEEK 3 · MONDAY · PREPOSITIONS OF PLACE ----------
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'The book will be <span class="blank"></span> the table.', sentence:true, opts:['on','in','at'], a:'on', why:'Sobre una superficie → on.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'I will be <span class="blank"></span> the classroom.', sentence:true, opts:['in','on','at'], a:'in', why:'Dentro de un espacio → in.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'I will be <span class="blank"></span> home.', sentence:true, opts:['at','in','on'], a:'at', why:'At home (sin "the").'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'She will be <span class="blank"></span> school.', sentence:true, opts:['at','in','on'], a:'at', why:'Lugar específico (escuela, oficina, supermercado) → at.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'They will play <span class="blank"></span> the park.', sentence:true, opts:['in','on','at'], a:'in', why:'Dentro de un área → in the park.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'My phone will be <span class="blank"></span> the bed.', sentence:true, opts:['on','in','at'], a:'on', why:'Sobre la cama (superficie) → on.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'I will travel to San Salvador <span class="blank"></span> the car.', sentence:true, opts:['in','on','at'], a:'in', why:'Transporte pequeño/privado (car, taxi) → in.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:"I won't call you, I will be <span class=\"blank\"></span> an airplane.", sentence:true, opts:['on','in','at'], a:'on', why:'Transporte grande/público (plane, bus, train) → on.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'I will watch that movie <span class="blank"></span> Netflix.', sentence:true, opts:['on','in','at'], a:'on', why:'Plataformas y tecnología → on.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'We will meet up <span class="blank"></span> the concert.', sentence:true, opts:['at','in','on'], a:'at', why:'Eventos → at.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'He will live <span class="blank"></span> 720 Main Street.', sentence:true, opts:['at','in','on'], a:'at', why:'Dirección exacta (con número) → at.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'We will arrive <span class="blank"></span> San Salvador.', sentence:true, opts:['in','at','on'], a:'in', why:'Llegar a una ciudad o país → arrive in.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'They will arrive <span class="blank"></span> the airport.', sentence:true, opts:['at','in','on'], a:'at', why:'Lugar específico (airport, station) → arrive at.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'I will work <span class="blank"></span> EduCourse.', sentence:true, opts:['at','in','on'], a:'at', why:'Lugar específico (una empresa, oficina) → at.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'My keys will be <span class="blank"></span> the sofa.', sentence:true, opts:['on','in','at'], a:'on', why:'Sobre el sofá → on.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa con in / on / at', big:'She will stay <span class="blank"></span> the house.', sentence:true, opts:['in','on','at'], a:'in', why:'Dentro de la casa → in the house.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'¿Cuál es correcta?', opts:['I will be at home.','I will be at the home.','I will be in home.','I will be on home.'], a:'I will be at home.', why:'At home, sin artículo.'},
+  {week:3, day:'Monday', cat:'pplace', type:'mc', q:'Completa', big:'I will go to work <span class="blank"></span> the bus.', sentence:true, opts:['on','in','at'], a:'on', why:'Bus = transporte grande/público → on the bus.'},
+
+  // ---------- WEEK 3 · MONDAY · PREPOSITIONS OF TIME ----------
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'I will travel <span class="blank"></span> December.', sentence:true, opts:['in','on','at'], a:'in', why:'Meses → in.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'She will graduate <span class="blank"></span> 2027.', sentence:true, opts:['in','on','at'], a:'in', why:'Años → in.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'He will travel <span class="blank"></span> summer.', sentence:true, opts:['in','on','at'], a:'in', why:'Estaciones → in.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'We will have a party <span class="blank"></span> Saturday.', sentence:true, opts:['on','in','at'], a:'on', why:'Días de la semana → on.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'They will visit us <span class="blank"></span> Christmas.', sentence:true, opts:['on','in','at'], a:'on', why:'Celebraciones / fechas → on (on Christmas Day).'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'I will call you <span class="blank"></span> my birthday.', sentence:true, opts:['on','in','at'], a:'on', why:'Fechas específicas → on.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'I will wake up <span class="blank"></span> 6 am.', sentence:true, opts:['at','in','on'], a:'at', why:'Hora exacta → at.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'They will meet <span class="blank"></span> midnight.', sentence:true, opts:['at','in','on'], a:'at', why:'Momento concreto → at midnight.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'We will have lunch <span class="blank"></span> noon.', sentence:true, opts:['at','in','on'], a:'at', why:'At noon (al mediodía).'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'I will study <span class="blank"></span> the morning.', sentence:true, opts:['in','on','at'], a:'in', why:'Partes del día → in the morning / afternoon / evening.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'I will read <span class="blank"></span> night.', sentence:true, opts:['at','in','on'], a:'at', why:'Excepción: at night (no "in the night").'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'We will meet <span class="blank"></span> Monday morning.', sentence:true, opts:['on','in','at'], a:'on', why:'Día + parte del día → gana el día: on Monday morning.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa con in / on / at', big:'The movie will be sad <span class="blank"></span> the end.', sentence:true, opts:['at','in','on'], a:'at', why:'Puntos en el tiempo → at the beginning / at the end.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'¿Cuál es correcta?', opts:['I will be in Monterrey next week.','I will be in Monterrey in next week.','I will be in Monterrey on next week.','I will be in Monterrey at next week.'], a:'I will be in Monterrey next week.', why:'Con next, this, last, tomorrow y tonight no se usa preposición.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa', big:'He will arrive in Spain <span class="blank"></span> two days.', sentence:true, opts:['in','on','at'], a:'in', why:'In two days = dentro de dos días.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa (lugar y tiempo)', big:'I will go to the restaurant <span class="blank"></span> Friday <span class="blank"></span> 3 pm.', sentence:true, opts:['on / at','in / at','at / on','on / in'], a:'on / at', why:'Día → on; hora → at.'},
+  {week:3, day:'Monday', cat:'ptime', type:'mc', q:'Completa (lugar y tiempo)', big:'I study English <span class="blank"></span> the morning <span class="blank"></span> home.', sentence:true, opts:['in / at','at / in','on / at','in / in'], a:'in / at', why:'In the morning (parte del día) + at home (lugar).'},
+  {week:3, day:'Monday', cat:'ptime', type:'text', q:'Escribe in, on o at', big:'___ July', a:['in'], why:'Meses → in July.'},
+  {week:3, day:'Monday', cat:'ptime', type:'text', q:'Escribe in, on o at', big:'___ Sunday', a:['on'], why:'Días → on Sunday.'},
+  {week:3, day:'Monday', cat:'ptime', type:'text', q:'Escribe in, on o at', big:'___ 7:30', a:['at'], why:'Hora → at 7:30.'},
+  {week:3, day:'Monday', cat:'ptime', type:'text', q:'Escribe in, on o at', big:'___ the afternoon', a:['in'], why:'In the afternoon.'},
+  {week:3, day:'Monday', cat:'ptime', type:'text', q:'Traduce al inglés', big:'Viajaré en diciembre.', sentence:true, a:['I will travel in December'], why:"I will (I'll) travel in December."},
+  {week:3, day:'Monday', cat:'ptime', type:'text', q:'Traduce al inglés', big:'Ellos estudiarán el martes.', sentence:true, a:['They will study on Tuesday'], why:"They will (They'll) study on Tuesday."},
+  {week:3, day:'Monday', cat:'ptime', type:'text', q:'Traduce al inglés', big:'Estaré en San Salvador el lunes a las 3 pm.', sentence:true, a:['I will be in San Salvador on Monday at 3 pm','I will be in San Salvador on Monday at 3pm','I will be in San Salvador on Monday at 3','I will be in San Salvador on Monday at 3:00 pm'], why:"I'll be in San Salvador on Monday at 3 pm. Lugar amplio (in) → día (on) → hora (at)."},
+];
+
+// ---------- Deletreo ----------
+const APPROX = {A:'éi',B:'bi',C:'si',D:'di',E:'i',F:'ef',G:'yi',H:'éich',I:'ái',J:'yéi',K:'kéi',L:'el',M:'em',N:'en',O:'óu',P:'pi',Q:'kiú',R:'ar',S:'es',T:'ti',U:'iú',V:'vi',W:'dábel-iu',X:'eks',Y:'uái',Z:'zi'};
+function groupLetters(word, f){
+  const out=[], w=word.toUpperCase();
+  for(let i=0;i<w.length;i++){ if(w[i+1]===w[i]){ out.push('double '+f(w[i])); i++; } else out.push(f(w[i])); }
+  return out;
+}
+const spellApprox = w => groupLetters(w, l=>APPROX[l]).join(' · ');
+const spellSpeech = w => groupLetters(w, l=>l).join(', ');
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window)) return false;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=0.7;
+    const v = speechSynthesis.getVoices().find(v=>v.lang && v.lang.startsWith('en')); if(v) u.voice=v;
+    speechSynthesis.speak(u); return true;
+  }catch(e){ return false; }
+}
+
+// ---------- Utilidades ----------
+const shuffle = a => { a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function norm(s, it){
+  s = s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’‘]/g,"'");
+  if(it.pron) return s.replace(/[\/ː:\s.\-'"]/g,'');
+  s = s.replace(/\bwon't\b/g,'will not').replace(/\bwont\b/g,'will not')
+       .replace(/\b(i|you|he|she|it|we|they)'ll\b/g,'$1 will');
+  s = s.replace(/[-–—]/g,' ').replace(/[?.!,¿¡"]/g,' ');
+  if(it.noAnd) s = s.replace(/\band\b/g,' ');
+  return s.replace(/\s+/g,' ').trim();
+}
+function correctText(it){
+  if(it.type==='mc') return it.a;
+  if(it.type==='listen') return it.word.toLowerCase();
+  let a = it.a[0];
+  if(it.cat==='num') return a.replace(/\b(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety) (one|two|three|four|five|six|seven|eight|nine)\b/g,'$1-$2');
+  if(it.cat==='will'||(it.cat==='wh'&&it.sentence)) a += /^(will|when|where|what|who|why|how|which|whose)\b/i.test(a)?'?':'.';
+  return a;
+}
+const plain = s => String(s).replace(/<span class="blank"><\/span>/g,'___').replace(/<[^>]+>/g,'');
+
+// ---------- Estado ----------
+let week=null, selected=new Set(), quiz=[], idx=0, results=[], answered=false;
+const app = document.getElementById('app');
+const weekQs = w => BANK.filter(q=>q.week===w.id);
+const catColor = (w,c) => 'k'+(Object.keys(w.cats).indexOf(c)+1);
+
+function home(){
+  week=null;
+  app.innerHTML = `<div class="weeks">${WEEKS.map(w=>`
+    <button class="week" data-w="${w.id}">
+      <div><h2>${esc(w.title)}</h2><p>${esc(w.desc)}</p></div>
+      <span class="count">${weekQs(w).length} preguntas →</span>
+    </button>`).join('')}</div>`;
+  app.querySelectorAll('.week').forEach(b=>b.onclick=()=>{
+    week = WEEKS.find(w=>w.id==b.dataset.w);
+    selected = new Set(Object.keys(week.cats));
+    topics();
+  });
+}
+
+function topics(){
+  const qs = weekQs(week);
+  const total = qs.filter(q=>selected.has(q.cat)).length;
+  app.innerHTML = `
+    <div class="card">
+      <div class="crumb"><button class="link" id="back">← Semanas</button><span class="hint" style="margin:0">/ ${esc(week.title)}</span></div>
+      <p class="q" style="margin-top:0">¿Qué quieres practicar?</p>
+      <p class="hint">Toca un tema para incluirlo o quitarlo. Las preguntas salen en orden aleatorio cada vez.</p>
+      <div class="cats">
+        ${Object.entries(week.cats).map(([c,name])=>`<button class="cat ${selected.has(c)?'on':'off'}" data-c="${c}"><strong>${qs.filter(q=>q.cat===c).length}</strong>${esc(name)}</button>`).join('')}
+      </div>
+      <p class="hint">No importan las mayúsculas, los acentos, los guiones ni el signo de interrogación. En <i>will</i> puedes usar la forma completa o la contracción (<i>won't</i>, <i>I'll</i>).</p>
+      <div class="row"><button class="btn" id="go" ${total?'':'disabled'}>Empezar (${total} preguntas)</button></div>
+    </div>`;
+  app.querySelectorAll('button.cat').forEach(b=>b.onclick=()=>{ const c=b.dataset.c; selected.has(c)?selected.delete(c):selected.add(c); topics(); });
+  document.getElementById('back').onclick = home;
+  document.getElementById('go').onclick = ()=>{ quiz = shuffle(qs.filter(q=>selected.has(q.cat))); idx=0; results=[]; render(); };
+}
+
+function render(){
+  answered=false;
+  const it = quiz[idx];
+  const pct = (idx/quiz.length)*100;
+  let body = it.big ? `<div class="big ${it.sentence?'sentence':''}">${it.big.includes('<span')?it.big:esc(it.big)}</div>` : '';
+  if(it.type==='listen'){
+    body += `<div class="listen"><button class="btn ghost" id="play">🔊 Escuchar deletreo</button></div>
+      <div class="approx">${esc(spellApprox(it.word))}</div>
+      <input type="text" id="ans" placeholder="Escribe la palabra…" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+  } else if(it.type==='text'){
+    body += `<input type="text" id="ans" placeholder="${it.pron?'Ej.: como suena en español…':'Escribe tu respuesta…'}" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+  } else {
+    body += `<div class="opts">${shuffle(it.opts).map(o=>`<button class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
+  }
+  app.innerHTML = `
+    <div class="card">
+      <div class="crumb"><button class="link" id="quit">← Salir</button><span class="hint" style="margin:0">/ ${esc(week.title)}</span></div>
+      <div class="top"><span class="tag ${catColor(week,it.cat)}">${esc(week.cats[it.cat])}</span><span>${idx+1} / ${quiz.length}</span></div>
+      <div class="bar"><div style="width:${pct}%"></div></div>
+      <p class="q">${esc(it.q)}</p>
+      ${body}
+      <div class="fb" id="fb"></div>
+      <div class="row">
+        ${it.type!=='mc'?'<button class="btn" id="check">Revisar</button>':''}
+        <button class="btn" id="next" style="display:none">${idx===quiz.length-1?'Ver resultado':'Siguiente →'}</button>
+      </div>
+    </div>`;
+  document.getElementById('quit').onclick = topics;
+  if(it.type==='mc'){
+    app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      if(answered) return;
+      const ok = b.dataset.v===it.a;
+      app.querySelectorAll('.opt').forEach(x=>{ x.disabled=true; if(x.dataset.v===it.a) x.classList.add('correct'); });
+      if(!ok) b.classList.add('wrong');
+      finish(ok, b.dataset.v);
+    });
+  } else {
+    const inp = document.getElementById('ans');
+    inp.focus();
+    inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ answered ? next() : check(); }});
+    document.getElementById('check').onclick = check;
+    if(it.type==='listen') document.getElementById('play').onclick = ()=>{
+      if(!speak(spellSpeech(it.word))) document.getElementById('play').textContent='Audio no disponible: usa la guía';
+    };
+  }
+  document.getElementById('next').onclick = next;
+}
+
+function check(){
+  if(answered) return;
+  const it = quiz[idx];
+  const inp = document.getElementById('ans');
+  const raw = inp.value;
+  if(!raw.trim()){ inp.focus(); return; }
+  const ok = it.a.some(a=>norm(a,it)===norm(raw,it));
+  inp.disabled = true;
+  document.getElementById('check').style.display='none';
+  finish(ok, raw);
+}
+
+function finish(ok, given){
+  answered=true;
+  const it = quiz[idx];
+  results.push({it, ok, given});
+  let warn = '';
+  const g = String(given).trim();
+  if(ok && it.cap && g && g[0]!==g[0].toUpperCase())
+    warn = `<div class="warn">⚠ Recuerda: días y meses van con mayúscula → ${esc(it.a[0])}</div>`;
+  const fb = document.getElementById('fb');
+  fb.className = 'fb ' + (ok?'ok':'bad');
+  fb.innerHTML = ok
+    ? `✔ ¡Correcto!${warn}<div class="why">${esc(it.why)}</div>`
+    : `✘ Respuesta correcta: <b>${esc(correctText(it))}</b><div class="why">${esc(it.why)}</div>`;
+  const n = document.getElementById('next'); n.style.display='inline-block'; n.focus();
+}
+
+function next(){ idx++; if(idx<quiz.length) render(); else summary(); }
+
+function summary(){
+  const total = results.filter(r=>r.ok).length, n = results.length;
+  const byCat = {}; Object.keys(week.cats).forEach(c=>byCat[c]={ok:0,n:0});
+  results.forEach(r=>{ byCat[r.it.cat].n++; if(r.ok) byCat[r.it.cat].ok++; });
+  const wrong = results.filter(r=>!r.ok);
+  const p = total/n;
+  const msg = p>=.9?'¡Excelente! 🎉': p>=.7?'¡Muy bien! Repasa los errores 👍': p>=.5?'Vas bien, sigue practicando 💪':`Repasa la ${week.title} y vuelve a intentarlo 📚`;
+  app.innerHTML = `
+    <div class="card">
+      <div class="crumb"><button class="link" id="back">← Semanas</button><span class="hint" style="margin:0">/ ${esc(week.title)}</span></div>
+      <p class="center hint" style="margin:0">Tu resultado</p>
+      <div class="score">${total} / ${n}</div>
+      <p class="center" style="margin:4px 0 0">${msg}</p>
+      <div class="cats">
+        ${Object.keys(week.cats).filter(c=>byCat[c].n).map(c=>`<div class="cat"><strong>${byCat[c].ok}/${byCat[c].n}</strong>${esc(week.cats[c])}</div>`).join('')}
+      </div>
+      ${wrong.length? `<div class="review"><h3>Para repasar</h3>
+        ${wrong.map(r=>{ const it=r.it;
+          const prompt = it.type==='listen' ? spellApprox(it.word) : plain(it.big||it.q);
+          return `<div class="rv"><div><b>${esc(prompt)}</b> — ${esc(it.q)}</div>
+            <div>Tu respuesta: <span class="yours">${esc(r.given)}</span> · Correcta: <span class="right">${esc(correctText(it))}</span></div></div>`;
+        }).join('')}</div>` : '<p class="center hint">¡Sin errores! 🙌</p>'}
+      <div class="row" style="justify-content:center">
+        ${wrong.length?'<button class="btn" id="retry">Repetir solo los errores</button>':''}
+        <button class="btn ghost" id="again">Elegir temas</button>
+      </div>
+    </div>`;
+  document.getElementById('back').onclick = home;
+  document.getElementById('again').onclick = topics;
+  const rt = document.getElementById('retry');
+  if(rt) rt.onclick = ()=>{ quiz = shuffle(wrong.map(r=>r.it)); idx=0; results=[]; render(); };
+}
+
+try{ if('speechSynthesis' in window) speechSynthesis.getVoices(); }catch(e){}
+home();
+</script>
+</body>
+</html>
