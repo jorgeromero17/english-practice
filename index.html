@@ -90,8 +90,8 @@ const WEEKS = [
     cats:{ num:'Números', place:'Lugares', punct:'Puntuación', spell:'Deletreo' } },
   { id:2, title:'Semana 2', desc:'Días, meses, pronombres, will, Wh- questions, daily routine, artículos y transition words',
     cats:{ days:'Días', months:'Meses', pron:'Pronombres', will:'Will', wh:'Wh- questions', routine:'Daily routine', art:'A / An / The', trans:'Transition words' } },
-  { id:3, title:'Semana 3', desc:'Estaciones y clima, preposiciones de lugar y de tiempo (in, on, at)',
-    cats:{ weather:'Seasons & weather', pplace:'Prepositions of place', ptime:'Prepositions of time' } },
+  { id:3, title:'Semana 3', desc:'Estaciones y clima, preposiciones (in, on, at), frutas, vegetales y transition words',
+    cats:{ weather:'Seasons & weather', pplace:'Prepositions of place', ptime:'Prepositions of time', fruits:'Fruits', veggies:'Vegetables', trans3:'Transition words' } },
 ];
 
 // =====================================================================
@@ -392,6 +392,98 @@ const BANK = [
   {week:3, day:'Monday', cat:'ptime', type:'text', q:'Traduce al inglés', big:'Viajaré en diciembre.', sentence:true, a:['I will travel in December'], why:"I will (I'll) travel in December."},
   {week:3, day:'Monday', cat:'ptime', type:'text', q:'Traduce al inglés', big:'Ellos estudiarán el martes.', sentence:true, a:['They will study on Tuesday'], why:"They will (They'll) study on Tuesday."},
   {week:3, day:'Monday', cat:'ptime', type:'text', q:'Traduce al inglés', big:'Estaré en San Salvador el lunes a las 3 pm.', sentence:true, a:['I will be in San Salvador on Monday at 3 pm','I will be in San Salvador on Monday at 3pm','I will be in San Salvador on Monday at 3','I will be in San Salvador on Monday at 3:00 pm'], why:"I'll be in San Salvador on Monday at 3 pm. Lugar amplio (in) → día (on) → hora (at)."},
+// ---------- WEEK 3 · TUESDAY · FRUITS & VEGETABLES ----------
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Manzana", "a": ["apple"], "pr": "ápol", "say": "Apple", "why": "Apple."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Albaricoque / chabacano", "a": ["apricot"], "pr": "éipricot", "say": "Apricot", "why": "Apricot."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Aguacate", "a": ["avocado"], "pr": "avokádou", "say": "Avocado", "why": "Avocado."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Banano / guineo", "a": ["banana"], "pr": "banána", "say": "Banana", "why": "Banana."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Mora", "a": ["blackberry"], "pr": "blákberi", "say": "Blackberry", "why": "Blackberry."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Grosella negra", "a": ["blackcurrant", "black currant"], "pr": "blak-kérent", "say": "Blackcurrant", "why": "Blackcurrant."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Arándano azul", "a": ["blueberry"], "pr": "blúberi", "say": "Blueberry", "why": "Blueberry."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Cereza", "a": ["cherry"], "pr": "chéri", "say": "Cherry", "why": "Cherry."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Higo", "a": ["fig"], "pr": "fig", "say": "Fig", "why": "Fig."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Toronja", "a": ["grapefruit"], "pr": "gréipfrut", "say": "Grapefruit", "why": "Grapefruit."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Limón verde / lima", "a": ["lime"], "pr": "láim", "say": "Lime", "why": "Lime."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Lichi", "a": ["lychee", "litchi"], "pr": "láichi", "say": "Lychee", "why": "Lychee."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Nectarina", "a": ["nectarine"], "pr": "nékterin", "say": "Nectarine", "why": "Nectarine."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Maracuyá", "a": ["passion fruit", "passionfruit"], "pr": "páshon frut", "say": "Passion fruit", "why": "Passion fruit."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Durazno / melocotón", "a": ["peach"], "pr": "pich", "say": "Peach", "why": "Peach."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Pera", "a": ["pear"], "pr": "per", "say": "Pear", "why": "Pear."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Piña", "a": ["pineapple"], "pr": "páinapol", "say": "Pineapple", "why": "Pineapple."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Ciruela", "a": ["plum"], "pr": "plam", "say": "Plum", "why": "Plum."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Granada", "a": ["pomegranate"], "pr": "pómegranit", "say": "Pomegranate", "why": "Pomegranate."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Uvas", "a": ["grapes", "grape"], "pr": "gréips", "say": "Grapes", "why": "Grapes."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Fresa", "a": ["strawberry"], "pr": "stróberi", "say": "Strawberry", "why": "Strawberry."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Apple\"?", "sub": "ápol", "opts": ["Manzana", "Lichi", "Grosella negra", "Maracuyá"], "a": "Manzana", "pr": "ápol", "say": "Apple", "why": "Apple = manzana."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Apricot\"?", "sub": "éipricot", "opts": ["Albaricoque / chabacano", "Aguacate", "Banano / guineo", "Granada"], "a": "Albaricoque / chabacano", "pr": "éipricot", "say": "Apricot", "why": "Apricot = albaricoque / chabacano."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Avocado\"?", "sub": "avokádou", "opts": ["Aguacate", "Mora", "Nectarina", "Albaricoque / chabacano"], "a": "Aguacate", "pr": "avokádou", "say": "Avocado", "why": "Avocado = aguacate."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Banana\"?", "sub": "banána", "opts": ["Banano / guineo", "Ciruela", "Cereza", "Albaricoque / chabacano"], "a": "Banano / guineo", "pr": "banána", "say": "Banana", "why": "Banana = banano / guineo."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Blackberry\"?", "sub": "blákberi", "opts": ["Mora", "Aguacate", "Durazno / melocotón", "Uvas"], "a": "Mora", "pr": "blákberi", "say": "Blackberry", "why": "Blackberry = mora."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Blackcurrant\"?", "sub": "blak-kérent", "opts": ["Grosella negra", "Aguacate", "Higo", "Fresa"], "a": "Grosella negra", "pr": "blak-kérent", "say": "Blackcurrant", "why": "Blackcurrant = grosella negra."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Blueberry\"?", "sub": "blúberi", "opts": ["Arándano azul", "Granada", "Durazno / melocotón", "Albaricoque / chabacano"], "a": "Arándano azul", "pr": "blúberi", "say": "Blueberry", "why": "Blueberry = arándano azul."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Cherry\"?", "sub": "chéri", "opts": ["Cereza", "Uvas", "Banano / guineo", "Higo"], "a": "Cereza", "pr": "chéri", "say": "Cherry", "why": "Cherry = cereza."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Fig\"?", "sub": "fig", "opts": ["Higo", "Uvas", "Albaricoque / chabacano", "Maracuyá"], "a": "Higo", "pr": "fig", "say": "Fig", "why": "Fig = higo."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Grapefruit\"?", "sub": "gréipfrut", "opts": ["Toronja", "Albaricoque / chabacano", "Cereza", "Fresa"], "a": "Toronja", "pr": "gréipfrut", "say": "Grapefruit", "why": "Grapefruit = toronja."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Lime\"?", "sub": "láim", "opts": ["Limón verde / lima", "Granada", "Mora", "Toronja"], "a": "Limón verde / lima", "pr": "láim", "say": "Lime", "why": "Lime = limón verde / lima."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Lychee\"?", "sub": "láichi", "opts": ["Lichi", "Durazno / melocotón", "Mora", "Granada"], "a": "Lichi", "pr": "láichi", "say": "Lychee", "why": "Lychee = lichi."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Nectarine\"?", "sub": "nékterin", "opts": ["Nectarina", "Banano / guineo", "Uvas", "Toronja"], "a": "Nectarina", "pr": "nékterin", "say": "Nectarine", "why": "Nectarine = nectarina."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Passion fruit\"?", "sub": "páshon frut", "opts": ["Maracuyá", "Granada", "Grosella negra", "Banano / guineo"], "a": "Maracuyá", "pr": "páshon frut", "say": "Passion fruit", "why": "Passion fruit = maracuyá."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Peach\"?", "sub": "pich", "opts": ["Durazno / melocotón", "Uvas", "Fresa", "Arándano azul"], "a": "Durazno / melocotón", "pr": "pich", "say": "Peach", "why": "Peach = durazno / melocotón."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Pear\"?", "sub": "per", "opts": ["Pera", "Lichi", "Banano / guineo", "Granada"], "a": "Pera", "pr": "per", "say": "Pear", "why": "Pear = pera."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Pineapple\"?", "sub": "páinapol", "opts": ["Piña", "Aguacate", "Uvas", "Albaricoque / chabacano"], "a": "Piña", "pr": "páinapol", "say": "Pineapple", "why": "Pineapple = piña."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Plum\"?", "sub": "plam", "opts": ["Ciruela", "Fresa", "Arándano azul", "Pera"], "a": "Ciruela", "pr": "plam", "say": "Plum", "why": "Plum = ciruela."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Pomegranate\"?", "sub": "pómegranit", "opts": ["Granada", "Ciruela", "Maracuyá", "Limón verde / lima"], "a": "Granada", "pr": "pómegranit", "say": "Pomegranate", "why": "Pomegranate = granada."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Grapes\"?", "sub": "gréips", "opts": ["Uvas", "Durazno / melocotón", "Granada", "Fresa"], "a": "Uvas", "pr": "gréips", "say": "Grapes", "why": "Grapes = uvas."},
+  {"week": 3, "day": "Tuesday", "cat": "fruits", "type": "mc", "q": "¿Qué significa \"Strawberry\"?", "sub": "stróberi", "opts": ["Fresa", "Lichi", "Toronja", "Cereza"], "a": "Fresa", "pr": "stróberi", "say": "Strawberry", "why": "Strawberry = fresa."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Brócoli", "a": ["broccoli"], "pr": "brókoli", "say": "Broccoli", "why": "Broccoli."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Cebolla", "a": ["onion"], "pr": "ánion", "say": "Onion", "why": "Onion."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Tomate", "a": ["tomato"], "pr": "toméitou", "say": "Tomato", "why": "Tomato."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Pepino", "a": ["cucumber"], "pr": "kiúkamber", "say": "Cucumber", "why": "Cucumber."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Papas", "a": ["potatoes", "potato"], "pr": "potéitous", "say": "Potatoes", "why": "Potatoes."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Zanahoria", "a": ["carrot"], "pr": "kérot", "say": "Carrot", "why": "Carrot."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Lechuga", "a": ["lettuce"], "pr": "létis", "say": "Lettuce", "why": "Lettuce."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Arvejas / guisantes", "a": ["peas", "pea"], "pr": "pis", "say": "Peas", "why": "Peas."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Hongo / champiñón", "a": ["mushroom"], "pr": "máshrum", "say": "Mushroom", "why": "Mushroom."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "text", "q": "¿Cómo se dice en inglés?", "big": "Berenjena", "a": ["eggplant"], "pr": "égplant", "say": "Eggplant", "why": "Eggplant."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Broccoli\"?", "sub": "brókoli", "opts": ["Brócoli", "Pepino", "Papas", "Cebolla"], "a": "Brócoli", "pr": "brókoli", "say": "Broccoli", "why": "Broccoli = brócoli."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Onion\"?", "sub": "ánion", "opts": ["Cebolla", "Zanahoria", "Hongo / champiñón", "Pepino"], "a": "Cebolla", "pr": "ánion", "say": "Onion", "why": "Onion = cebolla."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Tomato\"?", "sub": "toméitou", "opts": ["Tomate", "Hongo / champiñón", "Zanahoria", "Berenjena"], "a": "Tomate", "pr": "toméitou", "say": "Tomato", "why": "Tomato = tomate."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Cucumber\"?", "sub": "kiúkamber", "opts": ["Pepino", "Cebolla", "Berenjena", "Zanahoria"], "a": "Pepino", "pr": "kiúkamber", "say": "Cucumber", "why": "Cucumber = pepino."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Potatoes\"?", "sub": "potéitous", "opts": ["Papas", "Arvejas / guisantes", "Tomate", "Berenjena"], "a": "Papas", "pr": "potéitous", "say": "Potatoes", "why": "Potatoes = papas."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Carrot\"?", "sub": "kérot", "opts": ["Zanahoria", "Lechuga", "Tomate", "Pepino"], "a": "Zanahoria", "pr": "kérot", "say": "Carrot", "why": "Carrot = zanahoria."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Lettuce\"?", "sub": "létis", "opts": ["Lechuga", "Arvejas / guisantes", "Brócoli", "Zanahoria"], "a": "Lechuga", "pr": "létis", "say": "Lettuce", "why": "Lettuce = lechuga."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Peas\"?", "sub": "pis", "opts": ["Arvejas / guisantes", "Cebolla", "Zanahoria", "Tomate"], "a": "Arvejas / guisantes", "pr": "pis", "say": "Peas", "why": "Peas = arvejas / guisantes."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Mushroom\"?", "sub": "máshrum", "opts": ["Hongo / champiñón", "Zanahoria", "Arvejas / guisantes", "Papas"], "a": "Hongo / champiñón", "pr": "máshrum", "say": "Mushroom", "why": "Mushroom = hongo / champiñón."},
+  {"week": 3, "day": "Tuesday", "cat": "veggies", "type": "mc", "q": "¿Qué significa \"Eggplant\"?", "sub": "égplant", "opts": ["Berenjena", "Arvejas / guisantes", "Cebolla", "Lechuga"], "a": "Berenjena", "pr": "égplant", "say": "Eggplant", "why": "Eggplant = berenjena."},
+{week:3, day:'Tuesday', cat:'fruits', type:'mc', q:'¿Cuál está bien escrito?', opts:['strawberry','strawbery','strawberyy','strowberry'], a:'strawberry', pr:'stróberi', say:'strawberry', why:'Straw + berry: doble R en berry.'},
+  {week:3, day:'Tuesday', cat:'fruits', type:'mc', q:'¿Cuál está bien escrito?', opts:['pineapple','pinapple','pine apple','pineaple'], a:'pineapple', pr:'páinapol', say:'pineapple', why:'Pine + apple, todo junto.'},
+  {week:3, day:'Tuesday', cat:'fruits', type:'mc', q:'¿Cuál está bien escrito?', opts:['pomegranate','pomegranade','pomgranate','pomegranite'], a:'pomegranate', pr:'pómegranit', say:'pomegranate', why:'Pome-granate.'},
+  {week:3, day:'Tuesday', cat:'fruits', type:'mc', q:'En El Salvador, el "limón" verde y pequeño en inglés es…', opts:['lime','lemon','lychee','line'], a:'lime', pr:'láim', say:'lime', why:'Lime = limón verde. Lemon = limón amarillo.'},
+  {week:3, day:'Tuesday', cat:'fruits', type:'mc', q:'Plural de "strawberry"', opts:['strawberries','strawberrys','strawberryes','strawberry'], a:'strawberries', pr:'stróberis', say:'strawberries', why:'Consonante + y → -ies: strawberries.'},
+  {week:3, day:'Tuesday', cat:'fruits', type:'mc', q:'Plural de "cherry"', opts:['cherries','cherrys','cherryes','cherris'], a:'cherries', pr:'chéris', say:'cherries', why:'Cherry → cherries.'},
+  {week:3, day:'Tuesday', cat:'fruits', type:'mc', q:'Completa con el artículo', big:'I will eat <span class="blank"></span> apple.', sentence:true, opts:['an','a'], a:'an', why:'Sonido de vocal → an apple.'},
+  {week:3, day:'Tuesday', cat:'fruits', type:'mc', q:'Completa con el artículo', big:'She will buy <span class="blank"></span> banana.', sentence:true, opts:['a','an'], a:'a', why:'Sonido de consonante → a banana.'},
+  {week:3, day:'Tuesday', cat:'fruits', type:'mc', q:'Completa con el artículo', big:'He will eat <span class="blank"></span> avocado.', sentence:true, opts:['an','a'], a:'an', why:'Avocado empieza con sonido de vocal → an.'},
+  {week:3, day:'Tuesday', cat:'fruits', type:'text', q:'Traduce al inglés', big:'Me comeré una manzana en la mañana.', sentence:true, a:['I will eat an apple in the morning','In the morning I will eat an apple'], why:"I'll eat an apple in the morning."},
+  {week:3, day:'Tuesday', cat:'veggies', type:'mc', q:'¿Cuál está bien escrito?', opts:['broccoli','brocoli','broccolli','brocolli'], a:'broccoli', pr:'brókoli', say:'broccoli', why:'Doble C y una L: broccoli.'},
+  {week:3, day:'Tuesday', cat:'veggies', type:'mc', q:'¿Cuál está bien escrito?', opts:['lettuce','letuce','lettuse','lettice'], a:'lettuce', pr:'létis', say:'lettuce', why:'Doble T: lettuce.'},
+  {week:3, day:'Tuesday', cat:'veggies', type:'mc', q:'¿Cuál está bien escrito?', opts:['tomato','tomate','tomatto','tomatoe'], a:'tomato', pr:'toméitou', say:'tomato', why:'En inglés es tomato (con O final).'},
+  {week:3, day:'Tuesday', cat:'veggies', type:'mc', q:'Plural de "tomato"', opts:['tomatoes','tomatos','tomatoies','tomato'], a:'tomatoes', pr:'toméitous', say:'tomatoes', why:'Tomato → tomatoes (-es).'},
+  {week:3, day:'Tuesday', cat:'veggies', type:'mc', q:'Plural de "potato"', opts:['potatoes','potatos','potatoies','potato'], a:'potatoes', pr:'potéitous', say:'potatoes', why:'Potato → potatoes (-es).'},
+  {week:3, day:'Tuesday', cat:'veggies', type:'mc', q:'Completa con el artículo', big:'I will cut <span class="blank"></span> onion.', sentence:true, opts:['an','a'], a:'an', why:'Onion suena "ánion" (vocal) → an onion.'},
+  {week:3, day:'Tuesday', cat:'veggies', type:'text', q:'Traduce al inglés', big:'Ella no comprará tomates el lunes.', sentence:true, a:['She will not buy tomatoes on Monday'], why:"She won't buy tomatoes on Monday."},
+
+  // ---------- WEEK 3 · TUESDAY · TRANSITION WORDS (repaso) ----------
+  {week:3, day:'Tuesday', cat:'trans3', type:'text', q:'¿Cómo se dice en inglés?', big:'Después de eso', a:['after that'], why:'After that.'},
+  {week:3, day:'Tuesday', cat:'trans3', type:'text', q:'¿Cómo se dice en inglés?', big:'Después de esto', a:['after this'], why:'After this.'},
+  {week:3, day:'Tuesday', cat:'trans3', type:'text', q:'¿Cómo se dice en inglés?', big:'Más tarde', a:['later'], why:'Later.'},
+  {week:3, day:'Tuesday', cat:'trans3', type:'text', q:'¿Cómo se dice en inglés?', big:'Luego / después', a:['then'], why:'Then.'},
+  {week:3, day:'Tuesday', cat:'trans3', type:'text', q:'¿Cómo se dice en inglés?', big:'Además', a:['besides'], why:'Besides — con -s al final. Beside (sin -s) = al lado de.'},
+  {week:3, day:'Tuesday', cat:'trans3', type:'mc', q:'¿Qué significa "besides"?', opts:['Además','Al lado de','Después','Antes'], a:'Además', why:'Besides = además. Beside = al lado de.'},
+  {week:3, day:'Tuesday', cat:'trans3', type:'mc', q:'¿Qué significa "later"?', opts:['Más tarde','Último','Después de esto','Luego de eso'], a:'Más tarde', why:'Later = más tarde.'},
+  {week:3, day:'Tuesday', cat:'trans3', type:'mc', q:'¿Cuál significa "luego"?', opts:['then','than','them','they'], a:'then', why:'Then = luego. Than = que (comparar).'},
+  {week:3, day:'Tuesday', cat:'trans3', type:'mc', q:'Completa', big:'I will eat a banana. <span class="blank"></span>, I will drink an orange juice.', sentence:true, opts:['After that','Besides that','To begin','First'], a:'After that', why:'Paso siguiente → After that (después de eso).'},
+  {week:3, day:'Tuesday', cat:'trans3', type:'mc', q:'Completa', big:'I will work in the morning. <span class="blank"></span>, I will study English.', sentence:true, opts:['Later','First','To begin','Secondly'], a:'Later', why:'Algo que pasa después en el día → Later.'},
 ];
 
 // ---------- Deletreo ----------
@@ -479,6 +571,7 @@ function render(){
   const it = quiz[idx];
   const pct = (idx/quiz.length)*100;
   let body = it.big ? `<div class="big ${it.sentence?'sentence':''}">${it.big.includes('<span')?it.big:esc(it.big)}</div>` : '';
+  if(it.sub) body += `<div class="approx">🔊 ${esc(it.sub)}</div>`;
   if(it.type==='listen'){
     body += `<div class="listen"><button class="btn ghost" id="play">🔊 Escuchar deletreo</button></div>
       <div class="approx">${esc(spellApprox(it.word))}</div>
@@ -544,9 +637,12 @@ function finish(ok, given){
     warn = `<div class="warn">⚠ Recuerda: días y meses van con mayúscula → ${esc(it.a[0])}</div>`;
   const fb = document.getElementById('fb');
   fb.className = 'fb ' + (ok?'ok':'bad');
+  const pron = it.pr ? `<div class="why">🔊 Pronunciación: <b>${esc(it.pr)}</b> <button class="link" id="say">Escuchar</button></div>` : '';
   fb.innerHTML = ok
-    ? `✔ ¡Correcto!${warn}<div class="why">${esc(it.why)}</div>`
-    : `✘ Respuesta correcta: <b>${esc(correctText(it))}</b><div class="why">${esc(it.why)}</div>`;
+    ? `✔ ¡Correcto!${warn}<div class="why">${esc(it.why)}</div>${pron}`
+    : `✘ Respuesta correcta: <b>${esc(correctText(it))}</b><div class="why">${esc(it.why)}</div>${pron}`;
+  const sb = document.getElementById('say');
+  if(sb) sb.onclick = ()=>{ if(!speak(it.say||it.a[0])) sb.textContent='Audio no disponible'; };
   const n = document.getElementById('next'); n.style.display='inline-block'; n.focus();
 }
 

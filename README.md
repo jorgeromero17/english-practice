@@ -4,7 +4,7 @@ Cuestionario interactivo para repasar el curso de inglés de EduCourse, organiza
 
 - **Semana 1:** números, lugares, puntuación y deletreo.
 - **Semana 2:** días, meses, pronombres, futuro con *will*, Wh- questions, daily routine, artículos (a / an / the) y transition words.
-- **Semana 3:** estaciones y clima, preposiciones de lugar y de tiempo (in, on, at).
+- **Semana 3:** estaciones y clima, preposiciones de lugar y de tiempo (in, on, at), frutas, vegetales y repaso de transition words.
 
 Es una sola página estática (`index.html`), sin dependencias ni build.
 
