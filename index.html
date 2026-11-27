@@ -68,6 +68,18 @@
   button.cat{cursor:pointer}
   button.cat.on{border-color:var(--accent);background:var(--accent-soft)}
   button.cat.off{opacity:.45}
+  .status{display:block;margin-top:6px;font-size:.72rem;font-weight:600}
+  .status.mastered{color:var(--ok)}
+  .status.streak{color:var(--muted);letter-spacing:.08em}
+  .status.streak .on{color:var(--accent)}
+  .cat.is-mastered{border-color:var(--ok)}
+  button.cat.on.is-mastered{background:var(--ok-soft)}
+  .week .mastery{display:block;margin-top:4px;font-size:.8rem;color:var(--ok);font-weight:600}
+  .progress-box{margin-top:18px;padding:14px;border-radius:10px;background:var(--accent-soft);font-size:.92rem}
+  .progress-box h3{font-size:1rem;margin:0 0 8px}
+  .progress-box div{margin:4px 0}
+  .reset{margin-top:14px;font-size:.82rem;color:var(--muted)}
+  .reset .link{font-size:.82rem;font-weight:500;color:var(--muted);text-decoration:underline}
   .review{margin-top:18px}
   .review h3{font-size:1rem;margin:0 0 10px}
   .rv{border-top:1px solid var(--line);padding:10px 0;font-size:.92rem}
@@ -511,7 +523,24 @@ function correctText(it){
 const plain = s => String(s).replace(/<span class="blank"><\/span>/g,'___').replace(/<[^>]+>/g,'');
 
 // ---------- Estado ----------
-let week=null, selected=new Set(), quiz=[], idx=0, results=[], answered=false;
+let week=null, selected=new Set(), quiz=[], idx=0, results=[], answered=false, isRetry=false;
+
+// ---------- Progreso: tema dominado tras 3 rondas seguidas sin errores ----------
+const NEED = 3;
+const PKEY = 'english-practice-progress-v1';
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(PKEY)||'{}') || {}; }catch(e){ return {}; } }
+function saveProgress(){ try{ localStorage.setItem(PKEY, JSON.stringify(progress)); }catch(e){} }
+let progress = loadProgress();
+const pkey = (w,c) => w+':'+c;
+const topicState = (w,c) => progress[pkey(w,c)] || {streak:0, mastered:false};
+function statusHtml(w,c){
+  const st = topicState(w,c);
+  if(st.mastered) return `<span class="status mastered">✓ Dominado${st.streak<NEED?` · racha ${st.streak}/${NEED}`:''}</span>`;
+  const dots = Array.from({length:NEED},(_,i)=>i<st.streak?'<span class="on">●</span>':'○').join(' ');
+  return `<span class="status streak">${dots}</span>`;
+}
+function masteredCount(w){ return Object.keys(w.cats).filter(c=>topicState(w.id,c).mastered).length; }
+
 const app = document.getElementById('app');
 const weekQs = w => BANK.filter(q=>q.week===w.id);
 const catColor = (w,c) => 'k'+(Object.keys(w.cats).indexOf(c)+1);
@@ -520,7 +549,7 @@ function home(){
   week=null;
   app.innerHTML = `<div class="weeks">${WEEKS.map(w=>`
     <button class="week" data-w="${w.id}">
-      <div><h2>${esc(w.title)}</h2><p>${esc(w.desc)}</p></div>
+      <div><h2>${esc(w.title)}</h2><p>${esc(w.desc)}</p>${masteredCount(w)?`<span class="mastery">✓ ${masteredCount(w)}/${Object.keys(w.cats).length} temas dominados</span>`:''}</div>
       <span class="count">${weekQs(w).length} preguntas →</span>
     </button>`).join('')}</div>`;
   app.querySelectorAll('.week').forEach(b=>b.onclick=()=>{
@@ -537,16 +566,22 @@ function topics(){
     <div class="card">
       <div class="crumb"><button class="link" id="back">← Semanas</button><span class="hint" style="margin:0">/ ${esc(week.title)}</span></div>
       <p class="q" style="margin-top:0">¿Qué quieres practicar?</p>
-      <p class="hint">Toca un tema para incluirlo o quitarlo. Las preguntas salen en orden aleatorio cada vez.</p>
+      <p class="hint">Toca un tema para incluirlo o quitarlo. Las preguntas salen en orden aleatorio cada vez. Un tema queda <b>dominado</b> cuando lo completas ${NEED} veces seguidas sin errores (los puntos muestran tu racha). Puedes seguir practicándolo aunque esté dominado.</p>
       <div class="cats">
-        ${Object.entries(week.cats).map(([c,name])=>`<button class="cat ${selected.has(c)?'on':'off'}" data-c="${c}"><strong>${qs.filter(q=>q.cat===c).length}</strong>${esc(name)}</button>`).join('')}
+        ${Object.entries(week.cats).map(([c,name])=>`<button class="cat ${selected.has(c)?'on':'off'} ${topicState(week.id,c).mastered?'is-mastered':''}" data-c="${c}"><strong>${qs.filter(q=>q.cat===c).length}</strong>${esc(name)}${statusHtml(week.id,c)}</button>`).join('')}
       </div>
       <p class="hint">No importan las mayúsculas, los acentos, los guiones ni el signo de interrogación. En <i>will</i> puedes usar la forma completa o la contracción (<i>won't</i>, <i>I'll</i>).</p>
       <div class="row"><button class="btn" id="go" ${total?'':'disabled'}>Empezar (${total} preguntas)</button></div>
+      <div class="reset"><button class="link" id="reset">Reiniciar progreso de ${esc(week.title)}</button></div>
     </div>`;
   app.querySelectorAll('button.cat').forEach(b=>b.onclick=()=>{ const c=b.dataset.c; selected.has(c)?selected.delete(c):selected.add(c); topics(); });
   document.getElementById('back').onclick = home;
-  document.getElementById('go').onclick = ()=>{ quiz = shuffle(qs.filter(q=>selected.has(q.cat))); idx=0; results=[]; render(); };
+  document.getElementById('go').onclick = ()=>{ quiz = shuffle(qs.filter(q=>selected.has(q.cat))); idx=0; results=[]; isRetry=false; render(); };
+  const rs = document.getElementById('reset');
+  rs.onclick = ()=>{
+    if(rs.dataset.confirm){ Object.keys(week.cats).forEach(c=>delete progress[pkey(week.id,c)]); saveProgress(); topics(); return; }
+    rs.dataset.confirm = '1'; rs.textContent = '¿Seguro? Toca otra vez para borrar las rachas y temas dominados de esta semana';
+  };
 }
 
 function render(){
@@ -637,6 +672,26 @@ function summary(){
   results.forEach(r=>{ byCat[r.it.cat].n++; if(r.ok) byCat[r.it.cat].ok++; });
   const wrong = results.filter(r=>!r.ok);
   const p = total/n;
+  const changes = [];
+  if(!isRetry){
+    Object.keys(week.cats).filter(c=>byCat[c].n).forEach(c=>{
+      const st = {...topicState(week.id,c)}, name = week.cats[c];
+      if(byCat[c].ok===byCat[c].n){
+        st.streak = Math.min(st.streak+1, NEED);
+        if(!st.mastered && st.streak>=NEED){ st.mastered = true; st.masteredAt = new Date().toISOString(); changes.push(`🏆 ¡Dominaste <b>${esc(name)}</b>!`); }
+        else if(!st.mastered) changes.push(`🔥 <b>${esc(name)}</b>: racha ${st.streak}/${NEED} sin errores`);
+        else changes.push(`✓ <b>${esc(name)}</b>: sigue dominado, otra ronda perfecta`);
+      } else {
+        if(st.streak>0) changes.push(`↺ <b>${esc(name)}</b>: la racha vuelve a 0 (${byCat[c].n-byCat[c].ok} error${byCat[c].n-byCat[c].ok>1?'es':''})${st.mastered?' — sigue marcado como dominado':''}`);
+        st.streak = 0;
+      }
+      progress[pkey(week.id,c)] = st;
+    });
+    saveProgress();
+  }
+  const progressHtml = isRetry
+    ? '<div class="progress-box">Esta ronda fue solo de errores, así que no cuenta para las rachas. Para avanzar, practica el tema completo.</div>'
+    : (changes.length ? `<div class="progress-box"><h3>Progreso</h3>${changes.map(x=>`<div>${x}</div>`).join('')}</div>` : '');
   const msg = p>=.9?'¡Excelente! 🎉': p>=.7?'¡Muy bien! Repasa los errores 👍': p>=.5?'Vas bien, sigue practicando 💪':`Repasa la ${week.title} y vuelve a intentarlo 📚`;
   app.innerHTML = `
     <div class="card">
@@ -645,8 +700,9 @@ function summary(){
       <div class="score">${total} / ${n}</div>
       <p class="center" style="margin:4px 0 0">${msg}</p>
       <div class="cats">
-        ${Object.keys(week.cats).filter(c=>byCat[c].n).map(c=>`<div class="cat"><strong>${byCat[c].ok}/${byCat[c].n}</strong>${esc(week.cats[c])}</div>`).join('')}
+        ${Object.keys(week.cats).filter(c=>byCat[c].n).map(c=>`<div class="cat ${topicState(week.id,c).mastered?'is-mastered':''}"><strong>${byCat[c].ok}/${byCat[c].n}</strong>${esc(week.cats[c])}${statusHtml(week.id,c)}</div>`).join('')}
       </div>
+      ${progressHtml}
       ${wrong.length? `<div class="review"><h3>Para repasar</h3>
         ${wrong.map(r=>{ const it=r.it;
           const prompt = it.type==='listen' ? spellApprox(it.word) : plain(it.big||it.q);
@@ -661,7 +717,7 @@ function summary(){
   document.getElementById('back').onclick = home;
   document.getElementById('again').onclick = topics;
   const rt = document.getElementById('retry');
-  if(rt) rt.onclick = ()=>{ quiz = shuffle(wrong.map(r=>r.it)); idx=0; results=[]; render(); };
+  if(rt) rt.onclick = ()=>{ quiz = shuffle(wrong.map(r=>r.it)); idx=0; results=[]; isRetry=true; render(); };
 }
 
 try{ if('speechSynthesis' in window) speechSynthesis.getVoices(); }catch(e){}
